@@ -23,7 +23,7 @@ function filterApiary(apiary) {
   return 0;
 }
 
-d3.json("data/csvjson.json", (data) => {
+d3.json("https://ronaldaraujo.github.io/hcc-datavis/data/csvjson.json", (data) => {
   data.forEach((d) => {
     d.InsptDate = new Date(d.InsptDate);
     d.Bees = +d.Bees;
