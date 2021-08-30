@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Healthy Colony Checklist</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.0.0-beta.12/dc.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+    />
+    <link href="css/style.css" rel="stylesheet" />
+  </head>
+  <style>
+    #box-plot .x.axis text {
+      text-anchor: end !important;
+      transform: rotate(-35deg);
+    }
+  </style>
+  <body>
+    <div class="b-example-divider"></div>
+    <div class="container col-xxl-8 px-4 py-5">
+      <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <div class="col-10 col-sm-8 col-lg-6">
+          <img
+            src="images/intro.jpeg"
+            class="d-block mx-lg-auto img-fluid rounded"
+            alt="Inspeção da côlonia"
+            width="700"
+            height="500"
+            loading="lazy"
+          />
+        </div>
+        <div class="col-lg-6">
+          <h1 class="display-5 fw-bold lh-1 mb-3">Healthy Colony Checklist</h1>
+          <p class="lead">
+            O formulário HCC é utilizado para analisar a saúde da colônia de
+            abelhas. Para tanto, são verificados seis pontos: presença de
+            <strong>crias</strong>, presença de
+            <strong>abelhas adultas</strong>, se há a <strong>rainha</strong>,
+            se há <strong>alimento suficiente</strong>, se há
+            <strong>espaço suficiente</strong> e se há presença de
+            <strong>estressores</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="b-example-divider"></div>
+    <div class="container col-xxl-8 px-4 py-5">
+      <div class="row align-items-center g-5 py-5">
+        <div class="col-lg-6">
+          <div id="chart-ring-year"></div>
+        </div>
+        <div class="col-lg-6">
+          <div id="chart-line-regperyear"></div>
+        </div>
+      </div>
+    </div>
+    <div class="b-example-divider"></div>
+    <div class="container col-xxl-8 px-4 py-5">
+      <div class="row align-items-center g-5 py-5">
+        <div class="col-lg-12">
+          <div id="box-plot"></div>
+        </div>
+      </div>
+    </div>
+    <div class="container my-text" id="main-container">
+      <div class="container">
+        <div class="row">
+          <table
+            class="table table-hover dc-data-table dc-chart"
+            id="registration-table-graph"
+          >
+            <thead>
+              <tr class="header">
+                <th>Ano</th>
+                <th>ApiaryID</th>
+                <th>HiveID</th>
+                <th>Cria</th>
+                <th>Adultos</th>
+                <th>Comida</th>
+                <th>Rainha</th>
+                <th>Espaço</th>
+                <th>Estressor</th>
+                <th>HCC</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.11/crossfilter.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.0.0-beta.12/dc.min.js"></script>
+    <script src="http://colorbrewer2.org/export/colorbrewer.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="js/data.js?v=0.0.8"></script>
+  </body>
+</html>
