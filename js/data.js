@@ -23,7 +23,9 @@ function filterApiary(apiary) {
   return 0;
 }
 
-d3.json("https://ronaldaraujo.github.io/hcc-datavis/data/csvjson.json", (data) => {
+// https://ronaldaraujo.github.io/hcc-datavis/data/csvjson.json
+
+d3.json("../data/csvjson.json", (data) => {
   data.forEach((d) => {
     d.InsptDate = new Date(d.InsptDate);
     d.Bees = +d.Bees;
@@ -35,7 +37,7 @@ d3.json("https://ronaldaraujo.github.io/hcc-datavis/data/csvjson.json", (data) =
   });
 
   const facts = crossfilter(data);
-  const all = facts.groupAll();
+  // const all = facts.groupAll();
 
   const dateDim = facts.dimension((d) => d.InsptDate);
   const minDate = dateDim.bottom(1)[0].InsptDate;
@@ -66,13 +68,13 @@ d3.json("https://ronaldaraujo.github.io/hcc-datavis/data/csvjson.json", (data) =
   // const attrDim = facts.dimension((d) => [d.Bees, d.Brood]);
   // const attrDimGroup = attrDim.group(d => {console.log('d :>> ', d);});
 
-  // const beesboro = dateDim.group().reduceSum((d) => {
-  //   if (d.ApiaryID === "Beesboro") {
-  //     return getColonyHealthScore(d);
-  //   } else {
-  //     return 0;
-  //   }
-  // });
+  const beesboro = dateDim.group().reduceSum((d) => {
+    if (d.ApiaryID === "Beesboro") {
+      return getColonyHealthScore(d);
+    } else {
+      return 0;
+    }
+  });
 
   // const bbcc = dateDim.group().reduceSum((d) => {
   //   if (d.ApiaryID === "BBCC") {
@@ -128,6 +130,75 @@ d3.json("https://ronaldaraujo.github.io/hcc-datavis/data/csvjson.json", (data) =
     .sortBy((d) => d.InsptDate)
     .order(d3.descending);
 
+  function loadMarkers(apiariesFilterBoxPlot) {
+    apiariesFilterBoxPlot = apiariesFilterBoxPlot || [];
+
+    const mark = [
+      {
+        ApiaryID: "Beesboro",
+        Lat: "35.7040018",
+        Lon: "-80.7001015",
+      },
+      {
+        ApiaryID: "BBCC",
+        Lat: "35.9903053",
+        Lon: "-78.8987734",
+      },
+      {
+        ApiaryID: "BBTS",
+        Lat: "40.4314779",
+        Lon: "-80.0507119",
+      },
+      {
+        ApiaryID: "TBH",
+        Lat: "39.9416526",
+        Lon: "-85.7556174",
+      },
+      {
+        ApiaryID: "Lake",
+        Lat: "42.9615717",
+        Lon: "-108.2298595",
+      },
+      {
+        ApiaryID: "Juni",
+        Lat: "35.6323027",
+        Lon: "-78.8563586",
+      },
+    ];
+
+    let filterApiaries = [];
+
+    for (let index = 0; index < apiariesFilterBoxPlot.length; index++) {
+      const apiary = apiariesFilterBoxPlot[index];
+
+      let filterApiary = mark.find((d) => d.ApiaryID === apiary);
+
+      if (filterApiary) {
+        filterApiaries.push(filterApiary);
+      }
+    }
+
+    if (apiariesFilterBoxPlot.length) {
+      layerGroup.clearLayers();
+
+      filterApiaries.forEach((d) => {
+        let marker = L.marker([+d.Lat, +d.Lon]).addTo(layerGroup);
+
+        marker.bindPopup("Apiário: " + d.ApiaryID);
+      });
+    } else {
+      mark.forEach((d) => {
+        let marker = L.marker([+d.Lat, +d.Lon]).addTo(layerGroup);
+
+        marker.bindPopup("Apiário: " + d.ApiaryID);
+      });
+    }
+  }
+
+  const apiariesFilterBoxPlot = [];
+  const mapInstance = L.map("map").setView([39.792, -97.91], 4);
+  const layerGroup = L.layerGroup().addTo(mapInstance);
+
   dc.boxPlot("#box-plot")
     .width(1100)
     .height(400)
@@ -139,7 +210,27 @@ d3.json("https://ronaldaraujo.github.io/hcc-datavis/data/csvjson.json", (data) =
     .boxWidth(10)
     .yAxisPadding(10)
     .y(d3.scale.linear().domain([0, 100]))
-    .tickFormat(d3.format(".0f"));
+    .tickFormat(d3.format(".0f"))
+    .on("filtered", (d, apiaryId) => {
+      if (apiariesFilterBoxPlot.indexOf(apiaryId) < 0) {
+        apiariesFilterBoxPlot.push(apiaryId);
+      } else {
+        let index = apiariesFilterBoxPlot.indexOf(apiaryId);
+        apiariesFilterBoxPlot.splice(index, 1);
+      }
+
+      loadMarkers(apiariesFilterBoxPlot);
+    });
+
+  // -----------------
+
+  L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+    attribution:
+      '&copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+    maxZoom: 17,
+  }).addTo(mapInstance);
+
+  loadMarkers();
 
   dc.renderAll();
 });
