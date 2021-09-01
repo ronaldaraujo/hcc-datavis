@@ -222,8 +222,6 @@ d3.json("../data/csvjson.json", (data) => {
       loadMarkers(apiariesFilterBoxPlot);
     });
 
-  // -----------------
-
   L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
     attribution:
       '&copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors',
@@ -231,6 +229,8 @@ d3.json("../data/csvjson.json", (data) => {
   }).addTo(mapInstance);
 
   loadMarkers();
+
+  // ------------
 
   dc.renderAll();
 });
